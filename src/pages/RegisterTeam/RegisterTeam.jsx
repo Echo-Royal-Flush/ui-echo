@@ -2,35 +2,53 @@ import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextFie
 import { useState, useEffect } from "react";
 import AddIcon from '@mui/icons-material/Add';
 
-// Mock de serviços e usuários
-const mockServices = [
-    { id: "1", name: "Serviço 1" },
-    { id: "2", name: "Serviço 2" },
-    { id: "3", name: "Serviço 3" },
-];
-
-const mockUsers = [
-    { id: "1", name: "Ana" },
-    { id: "2", name: "João" },
-    { id: "3", name: "Carlos" },
-    { id: "4", name: "Bianca" },
-];
-
-export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false, initialData = null }) => {
+export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false }) => {
     const [teamName, setTeamName] = useState('');
     const [service, setService] = useState('');
+    const [services, setServices] = useState([]);
+    const [setLoadingServices] = useState(true);
+    const [setErrorServices] = useState(null);
     const [member, setMember] = useState('');
     const [members, setMembers] = useState([]);
     const [error, setError] = useState('');
+    const [users, setUsers] = useState([]);
+    const [setLoadingUsers] = useState(true);
+    const [setErrorUsers] = useState(null);
 
-    // Carrega os dados iniciais se estiver em modo de edição
+
     useEffect(() => {
-        if (open && isEditing && initialData) {
-            setTeamName(initialData.name);
-            setService(initialData.service?.id || '');
-            setMembers(initialData.members || []);
+        const fetchServices = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/services");
+                if (!response.ok) throw new Error("Erro ao buscar serviços");
+                const data = await response.json();
+                setServices(data);
+            } catch (err) {
+                setErrorServices(err.message);
+            } finally {
+                setLoadingServices(false);
+            }
+        };
+
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/users");
+                if (!response.ok) throw new Error("Erro ao buscar usuários");
+                const data = await response.json();
+                setUsers(data);
+            } catch (err) {
+                setErrorUsers(err.message);
+            } finally {
+                setLoadingUsers(false);
+            }
+        };
+
+        if (open) {
+            fetchServices();
+            fetchUsers();
         }
-    }, [open, isEditing, initialData]);
+    }, [open]);
+
 
     // Resetar campos ao fechar o modal
     useEffect(() => {
@@ -45,7 +63,7 @@ export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false, initi
 
     const handleAddMember = () => {
         if (member && !members.find(m => m.id === member)) {
-            const user = mockUsers.find(u => u.id === member);
+            const user = users.find(u => u.id === member);
             setMembers([...members, user]);
             setMember('');
         }
@@ -55,24 +73,41 @@ export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false, initi
         setMembers(members.filter((_, i) => i !== idx));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!teamName || !service || members.length === 0) {
             setError('Preencha todos os campos e adicione pelo menos um membro.');
             return;
         }
         setError('');
-        if (onSubmit) {
-            onSubmit({
-                id: isEditing && initialData ? initialData.id : null, // Mantém o ID se for edição
-                name: teamName,
-                service: mockServices.find(s => s.id === service),
-                members,
-                size: members.length
-            }, isEditing);
+
+        const payload = {
+            name: teamName,
+            service: services.find(s => s.id === service), // precisa enviar o objeto completo
+            members: members, // objetos completos dos membros
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/teams', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao criar o time');
+            }
+
+            const newTeam = await response.json();
+            if (onSubmit) onSubmit(newTeam, isEditing);
+            if (onClose) onClose();
+        } catch (err) {
+            setError(err.message);
         }
-        if (onClose) onClose();
     };
+
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
@@ -96,9 +131,10 @@ export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false, initi
                             label="Service"
                             onChange={e => setService(e.target.value)}
                         >
-                            {mockServices.map((s) => (
+                            {services.map((s) => (
                                 <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>
                             ))}
+
                         </Select>
                     </FormControl>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -110,7 +146,7 @@ export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false, initi
                                 label="Adicionar membro"
                                 onChange={e => setMember(e.target.value)}
                             >
-                                {mockUsers
+                                {users
                                     .filter(u => !members.find(m => m.id === u.id))
                                     .map((u) => (
                                         <MenuItem key={u.id} value={u.id}>{u.name}</MenuItem>
