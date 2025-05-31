@@ -1,14 +1,6 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-// Mock de companhias disponíveis
-const mockCompanies = [
-    { id: "1", name: "Empresa A" },
-    { id: "2", name: "Empresa B" },
-    { id: "3", name: "Empresa C" },
-    { id: "4", name: "Empresa D" },
-];
 
 export const RegisterUser = () => {
     const navigate = useNavigate();
@@ -18,8 +10,19 @@ export const RegisterUser = () => {
     const [password, setPassword] = useState('');
     const [company, setCompany] = useState(''); // Novo estado para a companhia
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [companies, setCompanies] = useState([]);
 
-    const handleSubmit = (e) => {
+
+    useEffect(() => {
+        fetch("http://localhost:8080/companies")
+            .then(res => res.json())
+            .then(data => setCompanies(data))
+            .catch(() => setCompanies([]));
+    }, []);
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!name || !jobTitle || !email || !password || !company) {
@@ -28,11 +31,39 @@ export const RegisterUser = () => {
         }
 
         setError('');
+        setLoading(true);
 
-        // Chamar API de cadastro aqui
-        alert('Cadastro enviado!');
+        try {
+            const response = await fetch('http://localhost:8080/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                    name,
+                    role: 'EMPLOYEE',
+                    position: jobTitle,
+                    company
+                })
+                
+            });
 
-        navigate('/');
+            if (!response.ok) {
+                // tenta ler mensagem da API, senão mostra erro padrão
+                const resp = await response.json().catch(() => ({}));
+                setError(resp.message || 'Erro ao cadastrar. Tente novamente.');
+                setLoading(false);
+                return;
+            }
+
+            // Usuário cadastrado com sucesso!
+            navigate('/');
+        } catch (err) {
+            setError('Erro de conexão com o servidor.');
+            setLoading(false);
+        }
     };
 
     return (
@@ -106,7 +137,7 @@ export const RegisterUser = () => {
                         required
                     >
                         <option value="" disabled>Selecione uma empresa</option>
-                        {mockCompanies.map((comp) => (
+                        {companies.map((comp) => (
                             <option key={comp.id} value={comp.id}>
                                 {comp.name}
                             </option>
