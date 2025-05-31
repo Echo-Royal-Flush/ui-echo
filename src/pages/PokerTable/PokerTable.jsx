@@ -279,7 +279,10 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
             )}
 
             {/* Modal para descrição */}
-            <Dialog open={descModalOpen} onClose={() => setDescModalOpen(false)}>
+            <Dialog open={descModalOpen} onClose={() => {
+                setDescModalOpen(false);
+                setDescription(""); // Limpa o campo ao fechar
+            }}>
                 <DialogTitle>
                     {selectedCard?.type === "CRITICISM"
                         ? "Descreva brevemente o motivo da crítica"
@@ -300,7 +303,10 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setDescModalOpen(false)}>Cancelar</Button>
+                    <Button onClick={() => {
+                        setDescModalOpen(false);
+                        setDescription(""); // Limpa o campo ao fechar
+                    }}>Cancelar</Button>
                     <Button
                         onClick={handleConfirmDescription}
                         disabled={selectedCard?.type === "CRITICISM" && !description}

@@ -3,6 +3,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { TeamCard } from "../../components/TeamCard/TeamCard";
 import { Header } from "../../components/Header/Header";
 import { ServiceCard } from "../../components/ServiceCard/ServiceCard";
+import { useState } from "react";
+import { RegisterTeam } from "../RegisterTeam/RegisterTeam";
 
 const services = [
     { name: "Serviço 1", size: 3 },
@@ -20,6 +22,8 @@ const teams = [
 ];
 
 export const FeedbackSelection = () => {
+    const [registerModalOpen, setRegisterModalOpen] = useState(false);
+
     return (
         <Box sx={{
             backgroundColor: '#ffffff',
@@ -39,7 +43,7 @@ export const FeedbackSelection = () => {
                         variant="contained"
                         startIcon={<AddIcon />}
                         sx={{ backgroundColor: '#c28d19' }}
-                        onClick={() => alert('Cadastrar novo time')}
+                        onClick={() => setRegisterModalOpen(true)}
                     >
                         Adicionar
                     </Button>
@@ -79,6 +83,16 @@ export const FeedbackSelection = () => {
                     ))}
                 </Grid>
             </Box>
+
+            {/* Modal de cadastro de time */}
+            <RegisterTeam
+                open={registerModalOpen}
+                onClose={() => setRegisterModalOpen(false)}
+                onSubmit={(data) => {
+                    // Aqui você pode adicionar lógica para atualizar a lista de times
+                    setRegisterModalOpen(false);
+                }}
+            />
         </Box>
     )
 }

@@ -6,6 +6,7 @@ import NegativeIcon from '@mui/icons-material/ThumbDownAlt';
 
 export const PokerCard = ({ type, categoria, onDragStart }) => {
     const decor = type === 'POSITIVE' ? positiveDecor : negativeDecor;
+    const typeName = type === 'POSITIVE' ? 'POSITIVA' : 'CRÍTICA';
 
     // Gradientes pastel
     const background =
@@ -59,7 +60,7 @@ export const PokerCard = ({ type, categoria, onDragStart }) => {
                     }
                 </Typography>
                 <Typography variant="body1" color="text.primary" sx={{ mt: 2, color: type === 'POSITIVE' ? '#368851' : '#F40303' }}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                    {typeName.charAt(0).toUpperCase() + typeName.slice(1)}
                 </Typography>
             </Box>
         </Box>
