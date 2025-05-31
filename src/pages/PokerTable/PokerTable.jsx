@@ -1,5 +1,5 @@
 import { Box, Button, Select, MenuItem, FormControl, InputLabel, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "../../components/Header/Header";
 import { PokerCard } from "../../components/PokerCard/PokerCard";
 
@@ -7,9 +7,11 @@ const positiveCardBack = "/images/positive-card-back.png";
 const negativeCardBack = "/images/negative-card-back.png";
 
 export const PokerTable = () => {
+    const categories = ["Lenda", "Épico", "Raro", "Comum", null];
+
     const [selectedCard, setSelectedCard] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-    const [selectedMember, setSelectedMember] = useState(users[0]?.id || "");
+    const [selectedMember, setSelectedMember] = useState(null);
     const [description, setDescription] = useState("");
     const [descModalOpen, setDescModalOpen] = useState(false);
 
@@ -21,7 +23,6 @@ export const PokerTable = () => {
     const [loadingUsers, setLoadingUsers] = useState(true);
     const [errorUsers, setErrorUsers] = useState(null);
 
-    const categories = ["Lenda", "Épico", "Raro", "Comum", null];
     const cardsId = new Map([
         [null, "44444444-4444-4444-4444-444444444444"],
         ["Lenda", "44444444-4444-4444-4444-444444444445"],
@@ -31,9 +32,9 @@ export const PokerTable = () => {
     ]);
 
     const isTeam = localStorage.getItem('isTeam');
-    const teamId = localStorage.getItem('teamId');
-    const serviceId = localStorage.getItem('serviceId');
-    const userId = localStorage.getItem('id');
+    const teamId = JSON.parse(localStorage.getItem('teamId'));
+    const serviceId = JSON.parse(localStorage.getItem('serviceId'));
+    const userId = JSON.parse(localStorage.getItem('id'));
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -52,10 +53,11 @@ export const PokerTable = () => {
 
         const fetchUsers = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/users-teams/${teamId}/users`);
+                const response = await fetch(`http://localhost:8080/user-teams/${teamId}/users`);
 
                 if (!response.ok) throw new Error("Erro ao buscar usuários do time");
                 const data = await response.json();
+                
                 setUsers(data);
             } catch (err) {
                 setErrorUsers(err.message);
@@ -68,7 +70,7 @@ export const PokerTable = () => {
             fetchServices();
             fetchUsers();
         }
-    }, [isTeam]);
+    }, []);
 
 
     // Ao clicar para submeter, abre o modal se necessário
@@ -115,8 +117,6 @@ export const PokerTable = () => {
             setDescription("");
         }
     };
-
-    tableType = "team"; // Forçando o tipo de mesa para "Team" para simplificar o exemplo
 
     return (
         <Box
@@ -203,7 +203,7 @@ export const PokerTable = () => {
                 alignItems: 'flex-end',
             }}>
                 <Box
-                    onClick={() => setSelectedCard({ type: "CRITICISM", categoria: criticismDeck[0].categoria })}
+                    onClick={() => setSelectedCard({ type: "CRITICISM", categoria: null })}
                     sx={{
                         position: 'relative',
                         cursor: 'pointer',
