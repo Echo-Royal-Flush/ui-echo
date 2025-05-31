@@ -5,7 +5,7 @@ import { TeamCard } from "../../components/TeamCard/TeamCard";
 import { Header } from "../../components/Header/Header";
 import { ServiceCard } from "../../components/ServiceCard/ServiceCard";
 import { RegisterTeam } from "../RegisterTeam/RegisterTeam";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export const FeedbackSelection = () => {
     const [services, setServices] = useState([]);
@@ -19,10 +19,12 @@ export const FeedbackSelection = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [currentTeam, setCurrentTeam] = useState(null);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await fetch("http://3.82.229.61:8080/services");
+                const response = await fetch("http://localhost:8080/services");
                 if (!response.ok) throw new Error(`Erro ao buscar serviços: ${response.status}`);
                 const data = await response.json();
                 setServices(data);
@@ -35,7 +37,7 @@ export const FeedbackSelection = () => {
 
         const fetchTeams = async () => {
             try {
-                const response = await fetch("http://3.82.229.61:8080/teams");
+                const response = await fetch("http://localhost:8080/teams");
                 if (!response.ok) throw new Error(`Erro ao buscar equipes: ${response.status}`);
                 const data = await response.json();
                 setTeams(data);
@@ -53,13 +55,13 @@ export const FeedbackSelection = () => {
     const handleOpenTeam = (team) => {
         localStorage.setItem('teamId', JSON.stringify(team.id));
         localStorage.setItem('isTeam', true);
-        Navigate("/gametable");
+        navigate("/gametable");
     }
 
     const handleOpenService = (service) => {
         localStorage.setItem('serviceId', JSON.stringify(service.id));
         localStorage.setItem('isTeam', false);
-        Navigate("/gametable");
+        navigate("/gametable");
     }
 
     const handleEditTeam = (team) => {
