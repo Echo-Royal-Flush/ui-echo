@@ -2,18 +2,27 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Mock de companhias disponíveis
+const mockCompanies = [
+    { id: "1", name: "Empresa A" },
+    { id: "2", name: "Empresa B" },
+    { id: "3", name: "Empresa C" },
+    { id: "4", name: "Empresa D" },
+];
+
 export const RegisterUser = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [jobTitle, setJobTitle] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [company, setCompany] = useState(''); // Novo estado para a companhia
     const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!name || !jobTitle || !email || !password) {
+        if (!name || !jobTitle || !email || !password || !company) {
             setError('Preencha todos os campos.');
             return;
         }
@@ -83,6 +92,26 @@ export const RegisterUser = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         style={inputStyle}
                     />
+
+                    {/* Dropdown de Companhias */}
+                    <select
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
+                        style={{
+                            ...inputStyle,
+                            backgroundColor: '#fff',
+                            appearance: 'auto',
+                            width: '375px',
+                        }}
+                        required
+                    >
+                        <option value="" disabled>Selecione uma empresa</option>
+                        {mockCompanies.map((comp) => (
+                            <option key={comp.id} value={comp.id}>
+                                {comp.name}
+                            </option>
+                        ))}
+                    </select>
 
                     {error && <p style={{ color: '#c28d19', margin: '8px 0' }}>{error}</p>}
 
