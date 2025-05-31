@@ -1,5 +1,6 @@
 import { Box } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import ProfileIcon from '@mui/icons-material/AccountCircle';
 
 export const Header = () => {
 
@@ -13,20 +14,26 @@ export const Header = () => {
             alignItems: 'center',
             justifyContent: 'center'
         }}>
-            <img src="./public/images/logo-light.png" style={{
-                width: '80px',
-                margin: 0
-            }} />
-            <img src="./public/images/profile.png"
-                onClick={() => navigate('/perfil')}
+            <img
+                src="/images/logo-light.png"
                 style={{
-                    width: '55px',
-                    height: '55px',
+                    width: '80px',
+                    margin: 0
+                }}
+            />
+            <ProfileIcon
+                onClick={() => navigate('/perfil')}
+                sx={{
+                    color: '#fff',
+                    width: 55,
+                    height: 55,
                     position: 'absolute',
-                    right: '0',           // Alinha à esquerda da posição relativa mais próxima
-                    top: '0',            // (opcional) posiciona no topo
+                    right: 0,
+                    top: 0,
                     margin: '15px 20px 20px 0',
-                }} />
+                    cursor: 'pointer'
+                }}
+            />
         </Box>
     )
 }
