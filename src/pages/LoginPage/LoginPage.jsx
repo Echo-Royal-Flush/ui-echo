@@ -27,15 +27,25 @@ export const LoginPage = () => {
             display: 'flex',
             height: '100vh',
             textAlign: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            alignItems: 'center',
         }}>
             <Box>
-                <form onSubmit={handleSubmit} 
+                <form onSubmit={handleSubmit}
                     style={{
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                    <h2>Echo</h2>
+
+                    <img
+                        src="/images/logo-light.png"
+                        alt="Logo Echo"
+                        style={{
+                            width: '180px',
+                            margin: '0 auto 16px auto',
+                            display: 'block'
+                        }}
+                    />
 
                     <input
                         type="email"
@@ -67,9 +77,9 @@ export const LoginPage = () => {
                         }}
                     />
 
-                    {error && <p style={{}}>{error}</p>}
+                    {error && <p style={{ color: '#c28d19', margin: '8px 0' }}>{error}</p>}
 
-                    <button type="submit" 
+                    <button type="submit"
                         style={{
                             width: '380px',
                             height: '40px',
@@ -77,11 +87,14 @@ export const LoginPage = () => {
                             borderRadius: '13px',
                             borderStyle: 'none',
                             padding: '1px 15px',
-                            backgroundColor: '#00B27F',
+                            color: 'white',
+                            fontWeight: 'bold',
+                            backgroundColor: '#c28d19',
                             boxShadow: '0 6px 6px rgba(0, 0, 0, 0.5)'
                         }}>Entrar</button>
-                        <p>Não possui conta? <a style={{textDecoration: 'none'}} href="">Cadastre-se!</a></p>
-                </form>
+                    <p style={{ color: '#fff' }}>
+                        Não possui conta? <a style={{ textDecoration: 'underline', color: '#fff' }} href="">Cadastre-se!</a>
+                    </p></form>
             </Box>
         </Box>
     )
