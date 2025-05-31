@@ -1,29 +1,48 @@
-import { Box, Grid, Typography, Button, Divider } from "@mui/material"
+import { useEffect, useState } from "react";
+import { Box, Grid, Typography, Button, Divider, CircularProgress, Alert } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { TeamCard } from "../../components/TeamCard/TeamCard";
 import { Header } from "../../components/Header/Header";
 import { ServiceCard } from "../../components/ServiceCard/ServiceCard";
 
-const services = [
-    { name: "Serviço 1", size: 3 },
-    { name: "Serviço 2", size: 6 },
-    { name: "Serviço 3", size: 2 },
-];
-
-const teams = [
-    { name: "Equipe Alpha", size: 8 },
-    { name: "Equipe Beta", size: 5 },
-    { name: "Equipe Gama", size: 12 },
-    { name: "Equipe Delta", size: 7 },
-    { name: "Equipe Epsilon", size: 10 },
-    { name: "Equipe Zeta", size: 4 },
-];
-
 export const FeedbackSelection = () => {
+    const [services, setServices] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Dados mockados de equipes
+    const teams = [
+        { name: "Equipe Alpha", size: 8 },
+        { name: "Equipe Beta", size: 5 },
+        { name: "Equipe Gama", size: 12 },
+        { name: "Equipe Delta", size: 7 },
+        { name: "Equipe Epsilon", size: 10 },
+        { name: "Equipe Zeta", size: 4 },
+    ];
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/services");
+
+                if (!response.ok) {
+                    throw new Error(`Erro ao buscar serviços: ${response.status}`);
+                }
+
+                const data = await response.json();
+                setServices(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchServices();
+    }, []);
+
     return (
-        <Box sx={{
-            backgroundColor: '#ffffff',
-        }}>
+        <Box sx={{ backgroundColor: '#ffffff' }}>
             <Header />
             <Box sx={{ maxWidth: 1200, mx: 'auto', marginTop: '40px' }}>
                 {/* Equipes */}
@@ -68,17 +87,24 @@ export const FeedbackSelection = () => {
                     </Typography>
                 </Box>
                 <Divider sx={{ mb: 4 }} />
-                <Grid container spacing={3}>
-                    {services.map((service, idx) => (
-                        <Grid item xs={12} sm={6} md={4} key={idx}>
-                            <ServiceCard
-                                name={service.name}
-                                onClick={() => alert(`Serviço: ${service.name}`)}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
+
+                {loading ? (
+                    <CircularProgress />
+                ) : error ? (
+                    <Alert severity="error">{error}</Alert>
+                ) : (
+                    <Grid container spacing={3}>
+                        {services.map((service, idx) => (
+                            <Grid item xs={12} sm={6} md={4} key={idx}>
+                                <ServiceCard
+                                    name={service.name}
+                                    onClick={() => alert(`Serviço: ${service.name}`)}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                )}
             </Box>
         </Box>
-    )
-}
+    );
+};
