@@ -31,7 +31,7 @@ export const PerfilPage = () => {
                 throw new Error('Erro ao criar o time');
             }
 
-            setUserData(response);
+            setUserData(response.JSON());
         } catch (err) {
             setError(err.message);
         }
