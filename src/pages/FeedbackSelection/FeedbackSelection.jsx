@@ -5,6 +5,7 @@ import { TeamCard } from "../../components/TeamCard/TeamCard";
 import { Header } from "../../components/Header/Header";
 import { ServiceCard } from "../../components/ServiceCard/ServiceCard";
 import { RegisterTeam } from "../RegisterTeam/RegisterTeam";
+import { Navigate } from "react-router-dom";
 
 export const FeedbackSelection = () => {
     const [services, setServices] = useState([]);
@@ -48,6 +49,18 @@ export const FeedbackSelection = () => {
         fetchServices();
         fetchTeams();
     }, []);
+
+    const handleOpenTeam = (team) => {
+        localStorage.setItem('teamId', JSON.stringify(team.id));
+        localStorage.setItem('isTeam', true);
+        Navigate("/gametable");
+    }
+
+    const handleOpenService = (service) => {
+        localStorage.setItem('serviceId', JSON.stringify(service.id));
+        localStorage.setItem('isTeam', false);
+        Navigate("/gametable");
+    }
 
     const handleEditTeam = (team) => {
         setCurrentTeam(team);
@@ -95,7 +108,7 @@ export const FeedbackSelection = () => {
                                     name={team.name}
                                     size={team.length || team.size} // adaptável ao que vier da API
                                     team={team}
-                                    onClick={() => alert(`Equipe: ${team.name}`)}
+                                    onClick={() => handleOpenTeam(team)}
                                     onEditClick={handleEditTeam}
                                 />
                             </Grid>
@@ -125,7 +138,7 @@ export const FeedbackSelection = () => {
                             <Grid item xs={12} sm={6} md={4} key={idx}>
                                 <ServiceCard
                                     name={service.name}
-                                    onClick={() => alert(`Serviço: ${service.name}`)}
+                                    onClick={() => handleOpenService(service)}
                                 />
                             </Grid>
                         ))}

@@ -6,27 +6,70 @@ import { PokerCard } from "../../components/PokerCard/PokerCard";
 const positiveCardBack = "/images/positive-card-back.png";
 const negativeCardBack = "/images/negative-card-back.png";
 
-// Dados mockados
-const positiveCategories = ["Legendária", "Épica", "Rara", "Comum"];
-const criticismDeck = [
-    { type: "CRITICISM" },
-    { type: "CRITICISM" },
-    { type: "CRITICISM" },
-];
-
-const mockTeamMembers = [
-    { id: "1", name: "Ana" },
-    { id: "2", name: "João" },
-    { id: "3", name: "Carlos" },
-    { id: "4", name: "Bianca" },
-];
-
-export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceInfo }) => {
+export const PokerTable = () => {
     const [selectedCard, setSelectedCard] = useState(null);
-    const [selectedCategory, setSelectedCategory] = useState(positiveCategories[0]);
-    const [selectedMember, setSelectedMember] = useState(teamMembers[0]?.id || "");
+    const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+    const [selectedMember, setSelectedMember] = useState(users[0]?.id || "");
     const [description, setDescription] = useState("");
     const [descModalOpen, setDescModalOpen] = useState(false);
+
+    const [services, setServices] = useState([]);
+    const [loadingServices, setLoadingServices] = useState(true);
+    const [errorServices, setErrorServices] = useState(null);
+
+    const [users, setUsers] = useState([]);
+    const [loadingUsers, setLoadingUsers] = useState(true);
+    const [errorUsers, setErrorUsers] = useState(null);
+
+    const categories = ["Lenda", "Épico", "Raro", "Comum", null];
+    const cardsId = new Map([
+        [null, "44444444-4444-4444-4444-444444444444"],
+        ["Lenda", "44444444-4444-4444-4444-444444444445"],
+        ["Épico", "44444444-4444-4444-4444-444444444446"],
+        ["Raro", "44444444-4444-4444-4444-444444444447"],
+        ["Comum", "44444444-4444-4444-4444-444444444448"],
+    ]);
+
+    const isTeam = localStorage.getItem('isTeam');
+    const teamId = localStorage.getItem('teamId');
+    const serviceId = localStorage.getItem('serviceId');
+    const userId = localStorage.getItem('id');
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/services");
+
+                if (!response.ok) throw new Error("Erro ao buscar serviços");
+                const data = await response.json();
+                setServices(data);
+            } catch (err) {
+                setErrorServices(err.message);
+            } finally {
+                setLoadingServices(false);
+            }
+        };
+
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/users-teams/${teamId}/users`);
+
+                if (!response.ok) throw new Error("Erro ao buscar usuários do time");
+                const data = await response.json();
+                setUsers(data);
+            } catch (err) {
+                setErrorUsers(err.message);
+            } finally {
+                setLoadingUsers(false);
+            }
+        };
+
+        if (open) {
+            fetchServices();
+            fetchUsers();
+        }
+    }, [isTeam]);
+
 
     // Ao clicar para submeter, abre o modal se necessário
     const handleSubmitCard = () => {
@@ -36,18 +79,41 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
         ) {
             setDescModalOpen(true);
         } else {
-            // lógica de submissão
             setSelectedCard(null);
             setDescription("");
         }
     };
 
     // Quando confirmar no modal
-    const handleConfirmDescription = () => {
-        // lógica de submissão
-        setDescModalOpen(false);
-        setSelectedCard(null);
-        setDescription("");
+    const handleConfirmDescription = async () => {
+        const payload = {
+            idCard: cardsId.get(selectedCategory),
+            idEvaluator: userId,
+            idEvaluated: isTeam ? selectedMember : serviceId,
+            description: description || null,
+            isAnon: false,
+            type: isTeam ? "USER" : "SERVICE"
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/feedbacks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao realizar feedback');
+            }
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setDescModalOpen(false);
+            setSelectedCard(null);
+            setDescription("");
+        }
     };
 
     tableType = "team"; // Forçando o tipo de mesa para "Team" para simplificar o exemplo
@@ -197,7 +263,7 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
                     zIndex: 20,
                 }}>
                     {/* Se for avaliação de time, mostra dropdown de membro */}
-                    {tableType === "team" && (
+                    {isTeam && (
                         <FormControl sx={{ mb: 7, mt: -9.5, minWidth: 180 }}>
                             <InputLabel id="membro-label" sx={{
                                 color: '#7500a8',
@@ -222,7 +288,7 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
                                     }
                                 }}
                             >
-                                {teamMembers.map((m) => (
+                                {users.map((m) => (
                                     <MenuItem key={m.id} value={m.id} sx={{ color: '#7500a8' }}>
                                         {m.name}
                                     </MenuItem>
@@ -233,7 +299,7 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
 
                     {/* Se for positiva, mostra dropdown de categoria */}
                     {selectedCard.type === "POSITIVE" && (
-                        <FormControl sx={{ mb: 2, minWidth: 180}}>
+                        <FormControl sx={{ mb: 2, minWidth: 180 }}>
                             <InputLabel id="categoria-label" sx={{
                                 color: '#c28d19',
                                 '&.Mui-focused': { color: '#c28d19' }
@@ -257,7 +323,7 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
                                     }
                                 }}
                             >
-                                {positiveCategories.map((cat) => (
+                                {categories.map((cat) => (
                                     <MenuItem key={cat} value={cat} sx={{ color: '#c28d19' }}>
                                         {cat}
                                     </MenuItem>
