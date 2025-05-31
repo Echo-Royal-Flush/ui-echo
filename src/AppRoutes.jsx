@@ -4,6 +4,7 @@ import { LoginPage } from './pages/LoginPage/LoginPage'
 import { GameHub } from './pages/GameHub/GameHub'
 import { FeedbackSelection } from './pages/FeedbackSelection/FeedbackSelection'
 import { PokerTable } from './pages/PokerTable/PokerTable'
+import { PerfilPage } from './pages/PerfilPage/PerfilPage'
 
 function AppRoutes() {
   return (
@@ -13,6 +14,7 @@ function AppRoutes() {
         <Route path='/gamehub' element={<GameHub />} ></Route>
         <Route path='/teams' element={<FeedbackSelection />}></Route>
         <Route path='/gametable' element={<PokerTable />}></Route>
+        <Route path='/perfil' element={<PerfilPage />}></Route>
       </Routes>
     </BrowserRouter>
   )
