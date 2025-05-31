@@ -7,6 +7,8 @@ function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<LoginPage />}></Route>
+        <Route path='' element >
+        </Route>
       </Routes>
     </BrowserRouter>
   )
