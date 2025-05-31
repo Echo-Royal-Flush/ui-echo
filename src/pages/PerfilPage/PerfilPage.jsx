@@ -17,7 +17,7 @@ export const PerfilPage = () => {
         totalLettersReceived: 112,
     };
 
-    const userId = localStorage.getItem('id');
+    const userId = JSON.parse(localStorage.getItem('id'));
     useEffect(async () => {
         try {
             const response = await fetch(`http://localhost:8080/users/${userId}`, {
@@ -37,15 +37,15 @@ export const PerfilPage = () => {
         }
     }, []);
 
-    useEffect(() => {
-        fetch(`http://localhost:8080/feedbacks/paged?userId=${userId}&pagina=${pagina}&tamanho=${tamanho}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setFeedbacks(data.content || []);
-                setTotalPaginas(data.totalPages || 1);
-            })
-            .catch((err) => console.error("Erro ao buscar feedbacks:", err));
-    }, [userData]);
+    // useEffect(() => {
+    //     fetch(`http://localhost:8080/feedbacks/paged?userId=${userId}&pagina=${pagina}&tamanho=${tamanho}`)
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setFeedbacks(data.content || []);
+    //             setTotalPaginas(data.totalPages || 1);
+    //         })
+    //         .catch((err) => console.error("Erro ao buscar feedbacks:", err));
+    // }, [userData]);
 
     const handleNext = () => {
         if (pagina < totalPaginas) setPagina(pagina + 1);
