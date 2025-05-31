@@ -31,33 +31,6 @@ const RetrospectiveCard = ({ streak, lettersSent, lettersReceived }) => {
           <p>Cartas Recebidas 🀄</p>
         </div>
         <Box sx={{ width: '100%', marginTop: '20px' }}>
-          <FormControl sx={{ width: '40%' }}>
-            <InputLabel id="multi-select-label">Destaques</InputLabel>
-            <Select
-              style={{
-                borderStyle: 'none',
-                borderRadius: '20px'
-              }}
-              labelId="multi-select-label"
-              multiple
-              value={selectedYears}
-              onChange={handleChange}
-              input={<OutlinedInput label="Ano" />}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </Box>
-              )}
-            >
-              {options.map((year) => (
-                <MenuItem key={year} value={year}>
-                  {year}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
         </Box>
       </div>
     </div>

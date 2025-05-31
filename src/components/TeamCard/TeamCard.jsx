@@ -8,6 +8,8 @@ export const TeamCard = ({ name, size, onClick, onEditClick, team }) => {
         if (onEditClick) onEditClick(team);
     };
 
+    const userRole = JSON.parse(localStorage.getItem('role'));
+
     return (
         <Box
             onClick={onClick}
@@ -30,7 +32,7 @@ export const TeamCard = ({ name, size, onClick, onEditClick, team }) => {
         >
             {/* Ícone à esquerda */}
             <GroupsIcon sx={{ fontSize: 40, color: '#c28d19', flexShrink: 0 }} />
-            
+
             {/* Conteúdo central */}
             <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
                 <Typography variant="h6" color="#000000" noWrap>{name}</Typography>
@@ -38,19 +40,21 @@ export const TeamCard = ({ name, size, onClick, onEditClick, team }) => {
                     {size} membros
                 </Typography>
             </Box>
-            
+
             {/* Botão à direita */}
-            <IconButton 
-                sx={{ 
-                    color: '#7500a8',
-                    flexShrink: 0,
-                    ml: 1
-                }}
-                onClick={handleEditClick}
-                aria-label="editar"
-            >
-                <MoreVertIcon />
-            </IconButton>
+            {userRole === 'ADMIN' && (
+                <IconButton
+                    sx={{
+                        color: '#7500a8',
+                        flexShrink: 0,
+                        ml: 1
+                    }}
+                    onClick={handleEditClick}
+                    aria-label="editar"
+                >
+                    <MoreVertIcon />
+                </IconButton>
+            )}
         </Box>
     );
 };

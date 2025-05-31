@@ -1,4 +1,4 @@
-import { Box } from "@mui/material"
+import { Box, Button } from "@mui/material"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,7 +8,7 @@ export const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!email || !password) {
@@ -16,13 +16,42 @@ export const LoginPage = () => {
             return;
         }
 
-        console.log('Email:', email);
-        console.log('Senha:', password);
         setError('');
 
-        // Chamar  API
-        alert('Login enviado!');
+        try {
+            const response = await fetch('http://localhost:8080/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
+
+            if (!response.ok) {
+                // tenta ler mensagem da API, senão mostra erro padrão
+                const resp = await response.json().catch(() => ({}));
+                setError(resp.message || 'Erro ao cadastrar. Tente novamente.');
+                setLoading(false);
+                return;
+            }
+
+            const data = await response.json();
+            localStorage.setItem('email', JSON.stringify(data.email));
+            localStorage.setItem('role', JSON.stringify(data.role));
+            localStorage.setItem('companyId', JSON.stringify(data.companyId));
+            localStorage.setItem('token', JSON.stringify(data.token));
+            localStorage.setItem('id', JSON.stringify(data.id));
+
+            navigate('/teams');
+        } catch (err) {
+            setError('Erro de conexão com o servidor.');
+            setLoading(false);
+        }
     };
+
     return (
         <Box sx={{
             background: 'linear-gradient(135deg, #540089 0%, #8e1dc1 40%, #ca78c8 100%)',
@@ -81,7 +110,8 @@ export const LoginPage = () => {
 
                     {error && <p style={{ color: '#c28d19', margin: '8px 0' }}>{error}</p>}
 
-                    <button type="submit"
+                    <Button type="submit"
+                        variant="contained"
                         style={{
                             width: '380px',
                             height: '40px',
@@ -94,7 +124,7 @@ export const LoginPage = () => {
                             fontWeight: 'bold',
                             backgroundColor: '#c28d19',
                             boxShadow: '0 6px 6px rgba(0, 0, 0, 0.5)'
-                        }}>Entrar</button>
+                        }}>Entrar</Button>
                     <p style={{ color: '#fff' }}>
                         Não possui conta? <a
                             style={{ textDecoration: 'underline', color: '#fff', cursor: 'pointer' }}

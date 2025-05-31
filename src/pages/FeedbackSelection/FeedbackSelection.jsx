@@ -5,6 +5,7 @@ import { TeamCard } from "../../components/TeamCard/TeamCard";
 import { Header } from "../../components/Header/Header";
 import { ServiceCard } from "../../components/ServiceCard/ServiceCard";
 import { RegisterTeam } from "../RegisterTeam/RegisterTeam";
+import { useNavigate } from 'react-router-dom';
 
 export const FeedbackSelection = () => {
     const [services, setServices] = useState([]);
@@ -17,6 +18,8 @@ export const FeedbackSelection = () => {
     const [registerModalOpen, setRegisterModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [currentTeam, setCurrentTeam] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -49,11 +52,25 @@ export const FeedbackSelection = () => {
         fetchTeams();
     }, []);
 
+    const handleOpenTeam = (team) => {
+        localStorage.setItem('teamId', JSON.stringify(team.id));
+        localStorage.setItem('isTeam', true);
+        navigate("/gametable");
+    }
+
+    const handleOpenService = (service) => {
+        localStorage.setItem('serviceId', JSON.stringify(service.id));
+        localStorage.setItem('isTeam', false);
+        navigate("/gametable");
+    }
+
     const handleEditTeam = (team) => {
         setCurrentTeam(team);
         setIsEditing(true);
         setRegisterModalOpen(true);
     };
+
+    const userRole = JSON.parse(localStorage.getItem('role'));
 
     return (
         <Box sx={{ backgroundColor: '#ffffff' }}>
@@ -68,14 +85,16 @@ export const FeedbackSelection = () => {
                     >
                         Equipes
                     </Typography>
-                    <Button
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                        sx={{ backgroundColor: '#c28d19' }}
-                        onClick={() => setRegisterModalOpen(true)}
-                    >
-                        Adicionar
-                    </Button>
+                    {userRole === 'ADMIN' && (
+                        <Button
+                            variant="contained"
+                            startIcon={<AddIcon />}
+                            sx={{ backgroundColor: '#c28d19' }}
+                            onClick={() => setRegisterModalOpen(true)}
+                        >
+                            Adicionar
+                        </Button>
+                    )}
                 </Box>
                 <Divider sx={{ mb: 4 }} />
 
@@ -91,7 +110,7 @@ export const FeedbackSelection = () => {
                                     name={team.name}
                                     size={team.length || team.size} // adaptável ao que vier da API
                                     team={team}
-                                    onClick={() => alert(`Equipe: ${team.name}`)}
+                                    onClick={() => handleOpenTeam(team)}
                                     onEditClick={handleEditTeam}
                                 />
                             </Grid>
@@ -121,7 +140,7 @@ export const FeedbackSelection = () => {
                             <Grid item xs={12} sm={6} md={4} key={idx}>
                                 <ServiceCard
                                     name={service.name}
-                                    onClick={() => alert(`Serviço: ${service.name}`)}
+                                    onClick={() => handleOpenService(service)}
                                 />
                             </Grid>
                         ))}
