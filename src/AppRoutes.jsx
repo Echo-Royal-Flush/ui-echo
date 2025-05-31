@@ -9,8 +9,7 @@ function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<LoginPage />}></Route>
-        <Route path='/gamehub' element={<GameHub />} >
-        </Route>
+        <Route path='/gamehub' element={<GameHub />} ></Route>
         <Route path='/teams' element={<AdminTeams />}></Route>
       </Routes>
     </BrowserRouter>

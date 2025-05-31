@@ -1,6 +1,7 @@
 import { Box, Grid, Typography, Button, Divider } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add';
 import { TeamCard } from "../../components/TeamCard";
+import { Header } from "../../components/Header/Header";
 
 const teams = [
     { name: "Equipe Alpha", size: 8 },
@@ -15,14 +16,9 @@ export const AdminTeams = () => {
     return (
         <Box sx={{
             backgroundColor: '#ffffff',
-            display: 'flex',
-            py: 6,
-            px: 2,
-            height: '100vh',
-            textAlign: 'center',
-            justifyContent: 'center'
         }}>
-            <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+            <Header />
+            <Box sx={{ maxWidth: 1200, mx: 'auto', marginTop: '40px' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
                     <Typography
                         variant="h4"
