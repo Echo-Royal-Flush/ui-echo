@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { TeamCard } from "../../components/TeamCard/TeamCard";
 import { Header } from "../../components/Header/Header";
 import { ServiceCard } from "../../components/ServiceCard/ServiceCard";
+import { RegisterTeam } from "../RegisterTeam/RegisterTeam";
 
 export const FeedbackSelection = () => {
     const [services, setServices] = useState([]);
@@ -12,6 +13,10 @@ export const FeedbackSelection = () => {
     const [loadingTeams, setLoadingTeams] = useState(true);
     const [errorServices, setErrorServices] = useState(null);
     const [errorTeams, setErrorTeams] = useState(null);
+
+    const [registerModalOpen, setRegisterModalOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [currentTeam, setCurrentTeam] = useState(null);
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -44,6 +49,12 @@ export const FeedbackSelection = () => {
         fetchTeams();
     }, []);
 
+    const handleEditTeam = (team) => {
+        setCurrentTeam(team);
+        setIsEditing(true);
+        setRegisterModalOpen(true);
+    };
+
     return (
         <Box sx={{ backgroundColor: '#ffffff' }}>
             <Header />
@@ -61,12 +72,13 @@ export const FeedbackSelection = () => {
                         variant="contained"
                         startIcon={<AddIcon />}
                         sx={{ backgroundColor: '#c28d19' }}
-                        onClick={() => alert('Cadastrar novo time')}
+                        onClick={() => setRegisterModalOpen(true)}
                     >
                         Adicionar
                     </Button>
                 </Box>
                 <Divider sx={{ mb: 4 }} />
+
                 {loadingTeams ? (
                     <CircularProgress />
                 ) : errorTeams ? (
@@ -77,8 +89,10 @@ export const FeedbackSelection = () => {
                             <Grid item xs={12} sm={6} md={4} key={idx}>
                                 <TeamCard
                                     name={team.name}
-                                    size={team.length} // ou team.size, depende da API
+                                    size={team.length || team.size} // adaptável ao que vier da API
+                                    team={team}
                                     onClick={() => alert(`Equipe: ${team.name}`)}
+                                    onEditClick={handleEditTeam}
                                 />
                             </Grid>
                         ))}
@@ -96,6 +110,7 @@ export const FeedbackSelection = () => {
                     </Typography>
                 </Box>
                 <Divider sx={{ mb: 4 }} />
+
                 {loadingServices ? (
                     <CircularProgress />
                 ) : errorServices ? (
@@ -113,6 +128,31 @@ export const FeedbackSelection = () => {
                     </Grid>
                 )}
             </Box>
+
+            {/* Modal de cadastro/edição de time */}
+            <RegisterTeam
+                open={registerModalOpen}
+                onClose={() => {
+                    setRegisterModalOpen(false);
+                    setIsEditing(false);
+                    setCurrentTeam(null);
+                }}
+                onSubmit={(data, isEdit) => {
+                    if (isEdit) {
+                        const updatedTeams = teams.map(t =>
+                            t.id === data.id ? data : t
+                        );
+                        setTeams(updatedTeams);
+                    } else {
+                        setTeams([...teams, { ...data, id: Date.now().toString() }]);
+                    }
+                    setRegisterModalOpen(false);
+                    setIsEditing(false);
+                    setCurrentTeam(null);
+                }}
+                isEditing={isEditing}
+                initialData={currentTeam}
+            />
         </Box>
     );
 };

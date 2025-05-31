@@ -1,8 +1,9 @@
-import { Box } from "@mui/material"
+import { Box, IconButton } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import ProfileIcon from '@mui/icons-material/AccountCircle';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 export const Header = () => {
-
     const navigate = useNavigate();
     return (
         <Box sx={{
@@ -11,22 +12,44 @@ export const Header = () => {
             backgroundColor: '#7500a8',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            position: 'relative'
         }}>
-            <img src="./public/images/logo-light.png" style={{
-                width: '80px',
-                margin: 0
-            }} />
-            <img src="./public/images/profile.png"
-                onClick={() => navigate('/perfil')}
-                style={{
-                    width: '55px',
-                    height: '55px',
+            {/* Botão de voltar */}
+            <IconButton
+                onClick={() => navigate(-1)}
+                sx={{
                     position: 'absolute',
-                    right: '0',           // Alinha à esquerda da posição relativa mais próxima
-                    top: '0',            // (opcional) posiciona no topo
+                    left: 16,
+                    color: '#fff',
+                    background: 'rgba(117,0,168,0.08)',
+                    '&:hover': { background: 'rgba(117,0,168,0.18)' }
+                }}
+                aria-label="Voltar"
+            >
+                <ArrowBackIosNewIcon />
+            </IconButton>
+            <img
+                src="/images/logo-light.png"
+                style={{
+                    width: '80px',
+                    margin: 0
+                }}
+                alt="Logo"
+            />
+            <ProfileIcon
+                onClick={() => navigate('/perfil')}
+                sx={{
+                    color: '#fff',
+                    width: 55,
+                    height: 55,
+                    position: 'absolute',
+                    right: 0,
+                    top: 0,
                     margin: '15px 20px 20px 0',
-                }} />
+                    cursor: 'pointer'
+                }}
+            />
         </Box>
     )
 }
