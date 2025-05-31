@@ -11,9 +11,6 @@ export const PerfilPage = () => {
         totalLettersSent: 230,
         totalLettersReceived: 112,
     };
-
-
-
     return (
         <>
             <Header />
@@ -75,6 +72,7 @@ export const PerfilPage = () => {
                             borderStyle: 'none',
                             padding: '1px 15px',
                             color: 'white',
+                            fontSize: '20px',
                             fontWeight: 'bold',
                             backgroundColor: '#c28d19',
                             boxShadow: '0 6px 6px rgba(0, 0, 0, 0.5)',
