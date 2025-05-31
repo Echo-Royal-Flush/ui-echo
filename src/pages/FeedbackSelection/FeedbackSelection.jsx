@@ -21,7 +21,7 @@ export const FeedbackSelection = () => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await fetch("http://localhost:8080/services");
+                const response = await fetch("http://3.82.229.61:8080/services");
                 if (!response.ok) throw new Error(`Erro ao buscar serviços: ${response.status}`);
                 const data = await response.json();
                 setServices(data);
@@ -34,7 +34,7 @@ export const FeedbackSelection = () => {
 
         const fetchTeams = async () => {
             try {
-                const response = await fetch("http://localhost:8080/teams");
+                const response = await fetch("http://3.82.229.61:8080/teams");
                 if (!response.ok) throw new Error(`Erro ao buscar equipes: ${response.status}`);
                 const data = await response.json();
                 setTeams(data);
