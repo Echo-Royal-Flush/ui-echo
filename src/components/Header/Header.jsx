@@ -1,9 +1,9 @@
-import { Box } from "@mui/material"
+import { Box, IconButton } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import ProfileIcon from '@mui/icons-material/AccountCircle';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 export const Header = () => {
-
     const navigate = useNavigate();
     return (
         <Box sx={{
@@ -12,14 +12,30 @@ export const Header = () => {
             backgroundColor: '#7500a8',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            position: 'relative'
         }}>
+            {/* Botão de voltar */}
+            <IconButton
+                onClick={() => navigate(-1)}
+                sx={{
+                    position: 'absolute',
+                    left: 16,
+                    color: '#fff',
+                    background: 'rgba(117,0,168,0.08)',
+                    '&:hover': { background: 'rgba(117,0,168,0.18)' }
+                }}
+                aria-label="Voltar"
+            >
+                <ArrowBackIosNewIcon />
+            </IconButton>
             <img
                 src="/images/logo-light.png"
                 style={{
                     width: '80px',
                     margin: 0
                 }}
+                alt="Logo"
             />
             <ProfileIcon
                 onClick={() => navigate('/perfil')}
