@@ -1,12 +1,227 @@
-# React + Vite
+# Echo-Royal-Flush
+Aplicação web desenvolvida para transformar a experiência de feedback em equipes, utilizando gamificação, cards divertidos, retrospectivas dinâmicas e notificações recorrentes. O objetivo é tornar o processo de troca de feedbacks mais engajador, contínuo e eficiente, promovendo a cultura de crescimento e colaboração no ambiente de trabalho.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## Sobre o Projeto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Esta aplicação web tem como objetivo revolucionar a forma como o feedback é realizado dentro de equipes, promovendo uma cultura mais aberta, transparente e constante de desenvolvimento pessoal e profissional.
 
-## Expanding the ESLint configuration
+Problema que resolve:
+Muitas empresas ainda enfrentam desafios no engajamento e na frequência dos feedbacks entre colaboradores, o que pode resultar em falhas de comunicação, baixo desempenho e desmotivação. O projeto atua justamente nesse ponto, tornando o processo mais leve, dinâmico e eficiente.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Público-alvo:
+
+Times de empresas de qualquer porte que buscam aprimorar a cultura de feedback
+
+Gestores e líderes preocupados com o desenvolvimento de suas equipes
+
+Profissionais de RH interessados em ferramentas inovadoras para gestão de pessoas
+
+Diferenciais:
+
+Gamificação: Feedbacks são transformados em cards interativos, tornando a experiência mais atrativa e lúdica.
+
+Retrospectivas: Funcionalidade integrada para realização de retrospectivas de equipe, facilitando análises e melhorias contínuas.
+
+Notificações recorrentes: Lembretes automáticos garantem que o feedback aconteça de forma constante e natural.
+
+Foco no engajamento: A plataforma foi pensada para ser intuitiva e estimular a participação ativa de todos os membros da equipe.
+
+---
+
+## Índice
+
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Pré-requisitos](#pré-requisitos)
+- [Como Rodar o Projeto](#como-rodar-o-projeto)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Ambiente de Desenvolvimento](#ambiente-de-desenvolvimento)
+- [Testes](#testes)
+- [Deploy](#deploy)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
+- [Autores](#autores)
+- [Referências](#referências)
+
+---
+
+## Funcionalidades
+
+- [x] Login
+- [x] Atribuir carta
+- [x] Visualizar cartas
+- [ ] Coleção de cartas em desenvolvimento
+
+---
+
+## Tecnologias Utilizadas
+
+- **Frontend:** React, TypeScript
+- **Backend:** Java, Springboot
+- **Banco de Dados:** PostgreSQL
+- **Outros:** Docker
+
+---
+
+## Pré-requisitos
+
+Antes de começar, certifique-se de ter instalado em sua máquina:
+
+- [Node.js](https://nodejs.org/) >= 18.x **e** [npm](https://www.npmjs.com/) **ou** [yarn](https://yarnpkg.com/)  
+  _Necessário para rodar o frontend (React + TypeScript)_
+- [Java](https://adoptium.net/) >= 17  
+  _Necessário para rodar o backend (Spring Boot)_
+- [Docker](https://www.docker.com/) (opcional)  
+  _Caso queira executar o projeto utilizando containers_
+- [PostgreSQL](https://www.postgresql.org/) >= 14.x  
+  _Banco de dados utilizado pelo projeto_
+
+---
+
+## Como Rodar o Projeto
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/seuusuario/seuprojeto.git
+cd seuprojeto
+
+Claro! Segue o restante do README em bloco único para você copiar e colar:
+
+```
+git clone https://github.com/seuusuario/echo-royal-flush.git
+cd echo-royal-flush
+```
+
+### 2. Configure as variáveis de ambiente
+
+Crie um arquivo `.env` para o backend e, se necessário, para o frontend, com as configurações necessárias de acesso ao banco de dados, autenticação, etc.
+
+### 3. Inicialize o banco de dados
+
+Se estiver usando Docker, suba os containers:
+
+```bash
+docker-compose up -d
+```
+
+Ou configure manualmente o banco PostgreSQL e atualize as variáveis de ambiente.
+
+### 4. Instale as dependências do frontend
+
+```bash
+cd frontend
+npm install
+# ou
+yarn install
+```
+
+### 5. Instale as dependências do backend
+
+```bash
+cd ../backend
+./mvnw clean install
+```
+
+### 6. Rode o frontend
+
+```bash
+cd ../frontend
+npm run dev
+# ou
+yarn dev
+```
+
+### 7. Rode o backend
+
+```bash
+cd ../backend
+./mvnw spring-boot:run
+```
+
+---
+
+## Estrutura do Projeto
+
+```
+echo-royal-flush/
+├── backend/         # Projeto Java Spring Boot
+│   ├── src/
+│   └── ...
+├── frontend/        # Projeto React + TypeScript
+│   ├── src/
+│   └── ...
+├── docker-compose.yml
+└── README.md
+```
+
+---
+
+## Ambiente de Desenvolvimento
+
+* **Frontend:**
+
+  * Node.js >= 18.x
+  * React 18.x
+  * TypeScript
+* **Backend:**
+
+  * Java 17
+  * Spring Boot
+  * Maven/Gradle
+* **Banco:**
+
+  * PostgreSQL >= 14
+* **DevOps:**
+
+  * Docker (opcional para ambiente integrado)
+
+---
+
+## Testes
+
+### Frontend
+
+```bash
+cd frontend
+npm test
+# ou
+yarn test
+```
+
+### Backend
+
+```bash
+cd backend
+./mvnw test
+```
+
+---
+
+## Deploy
+
+O Front-end esta hospedado no Amplify AWS, disponivel em https://main.d17mfmedg0vka5.amplifyapp.com
+
+## Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+---
+
+## Autores
+
+* [Matheus Bueno de Oliveira](https://github.com/MatheusBuenodeOliveira)
+* \
+
+---
+
+## Referências
+
+* Documentação oficial do [React](https://react.dev/)
+* Documentação do [Spring Boot](https://spring.io/projects/spring-boot)
+* [PostgreSQL](https://www.postgresql.org/)
+* [Docker](https://www.docker.com/)
+* Artigos e materiais sobre gamificação e feedback em equipes
+---
