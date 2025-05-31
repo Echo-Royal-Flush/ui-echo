@@ -42,7 +42,7 @@ export const PerfilPage = () => {
                             backgroundColor: '#E5E5E5',
                             margin: '10px 0 20px 0',
                             paddingLeft: '20px'
-                        }} placeholder='aaaaa' />
+                        }} placeholder='João Miguel' />
                         <label>Email</label>
                         <input style={{
                             height: '45px',
@@ -52,8 +52,8 @@ export const PerfilPage = () => {
                             backgroundColor: '#E5E5E5',
                             margin: '10px 0 20px 0',
                             paddingLeft: '20px'
-                        }} placeholder='aaaaa' />
-                        <label>Role</label>
+                        }} placeholder='joao.miguel@ig.com' />
+                        <label>Cargo</label>
                         <input style={{
                             height: '45px',
                             width: '380px',
@@ -62,7 +62,7 @@ export const PerfilPage = () => {
                             backgroundColor: '#E5E5E5',
                             margin: '10px 0 20px 0',
                             paddingLeft: '20px'
-                        }} placeholder='aaaaa' />
+                        }} placeholder='Desenvolvedor' />
                         <button style={{
                             width: '380px',
                             height: '50px',
