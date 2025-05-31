@@ -214,6 +214,7 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
                                     '.MuiOutlinedInput-notchedOutline': { borderColor: '#7500a8' },
                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#7500a8' },
                                     '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#7500a8' },
+                                    borderRadius: '25px'
                                 }}
                                 MenuProps={{
                                     PaperProps: {
@@ -232,7 +233,7 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
 
                     {/* Se for positiva, mostra dropdown de categoria */}
                     {selectedCard.type === "POSITIVE" && (
-                        <FormControl sx={{ mb: 2, minWidth: 180 }}>
+                        <FormControl sx={{ mb: 2, minWidth: 180}}>
                             <InputLabel id="categoria-label" sx={{
                                 color: '#c28d19',
                                 '&.Mui-focused': { color: '#c28d19' }
@@ -247,6 +248,8 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
                                     '.MuiOutlinedInput-notchedOutline': { borderColor: '#c28d19' },
                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#c28d19' },
                                     '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#c28d19' },
+                                    borderRadius: '25px'
+
                                 }}
                                 MenuProps={{
                                     PaperProps: {

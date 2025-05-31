@@ -23,7 +23,7 @@ export const PerfilPage = () => {
                 padding: '40px', 
                 width: '80%', 
                 alignItems: 'center',
-                margin: '0 auto'
+                marginLeft: '300px'
                 }}>
 
                 {/* Seção de Informações do Usuário */}

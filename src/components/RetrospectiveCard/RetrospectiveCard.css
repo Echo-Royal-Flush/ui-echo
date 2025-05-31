@@ -22,7 +22,7 @@
   display: flex;
   justify-content: space-around; /* Distribui os itens uniformemente */
   align-items: center;
-  background: linear-gradient(135deg, #1DB954 0%, #121212 100%); /* Gradiente verde-escuro para preto */
+  background: linear-gradient(135deg, #540089 0%, #8e1dc1 40%, #ca78c8 100%); /* Gradiente verde-escuro para preto */
   border-radius: 15px; /* Bordas mais arredondadas */
   padding: 40px 20px; /* Mais preenchimento interno */
   color: white; /* Texto branco */
