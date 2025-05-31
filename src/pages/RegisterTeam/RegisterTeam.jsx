@@ -16,12 +16,21 @@ const mockUsers = [
     { id: "4", name: "Bianca" },
 ];
 
-export const RegisterTeam = ({ open, onClose, onSubmit }) => {
+export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false, initialData = null }) => {
     const [teamName, setTeamName] = useState('');
     const [service, setService] = useState('');
     const [member, setMember] = useState('');
     const [members, setMembers] = useState([]);
     const [error, setError] = useState('');
+
+    // Carrega os dados iniciais se estiver em modo de edição
+    useEffect(() => {
+        if (open && isEditing && initialData) {
+            setTeamName(initialData.name);
+            setService(initialData.service?.id || '');
+            setMembers(initialData.members || []);
+        }
+    }, [open, isEditing, initialData]);
 
     // Resetar campos ao fechar o modal
     useEffect(() => {
@@ -55,20 +64,21 @@ export const RegisterTeam = ({ open, onClose, onSubmit }) => {
         setError('');
         if (onSubmit) {
             onSubmit({
-                teamName,
+                id: isEditing && initialData ? initialData.id : null, // Mantém o ID se for edição
+                name: teamName,
                 service: mockServices.find(s => s.id === service),
-                members
-            });
+                members,
+                size: members.length
+            }, isEditing);
         }
         if (onClose) onClose();
-        setTeamName('');
-        setService('');
-        setMembers([]);
     };
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
-            <DialogTitle sx={{ color: '#7500a8', fontWeight: 700 }}>Cadastrar Time</DialogTitle>
+            <DialogTitle sx={{ color: '#7500a8', fontWeight: 700 }}>
+                {isEditing ? 'Editar Time' : 'Cadastrar Time'}
+            </DialogTitle>
             <form onSubmit={handleSubmit}>
                 <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <TextField
@@ -135,7 +145,7 @@ export const RegisterTeam = ({ open, onClose, onSubmit }) => {
                 <DialogActions>
                     <Button onClick={onClose}>Cancelar</Button>
                     <Button type="submit" variant="contained" sx={{ background: '#7500a8', color: '#fff' }}>
-                        Cadastrar
+                        {isEditing ? 'Salvar' : 'Cadastrar'}
                     </Button>
                 </DialogActions>
             </form>
