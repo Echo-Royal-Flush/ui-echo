@@ -27,7 +27,7 @@ export const PerfilPage = () => {
                 <Box sx={{
                     textAlign: 'center'
                 }}> 
-                    <img src="./public/images/profile.png" style={{ height: '70px', width: '70px'}} />
+                    <img src="/images/profile.png" style={{ height: '70px', width: '70px'}} />
                     <form style={{
                         display: 'flex',
                         flexDirection: 'column',
