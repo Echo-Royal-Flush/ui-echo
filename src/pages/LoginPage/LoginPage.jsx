@@ -90,6 +90,7 @@ export const LoginPage = () => {
                             borderStyle: 'none',
                             padding: '1px 15px',
                             color: 'white',
+                            fontSize: '25px',
                             fontWeight: 'bold',
                             backgroundColor: '#c28d19',
                             boxShadow: '0 6px 6px rgba(0, 0, 0, 0.5)'
