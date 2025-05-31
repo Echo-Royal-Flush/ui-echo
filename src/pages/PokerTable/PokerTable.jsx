@@ -265,7 +265,6 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
                             </Select>
                         </FormControl>
                     )}
-
                     <PokerCard
                         type={selectedCard.type}
                         categoria={selectedCard.type === "POSITIVE" ? selectedCategory : null}
