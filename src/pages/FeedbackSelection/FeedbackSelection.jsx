@@ -55,6 +55,8 @@ export const FeedbackSelection = () => {
         setRegisterModalOpen(true);
     };
 
+    const userRole = JSON.parse(localStorage.getItem('role'));
+
     return (
         <Box sx={{ backgroundColor: '#ffffff' }}>
             <Header />
@@ -68,14 +70,16 @@ export const FeedbackSelection = () => {
                     >
                         Equipes
                     </Typography>
-                    <Button
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                        sx={{ backgroundColor: '#c28d19' }}
-                        onClick={() => setRegisterModalOpen(true)}
-                    >
-                        Adicionar
-                    </Button>
+                    {userRole === 'ADMIN' && (
+                        <Button
+                            variant="contained"
+                            startIcon={<AddIcon />}
+                            sx={{ backgroundColor: '#c28d19' }}
+                            onClick={() => setRegisterModalOpen(true)}
+                        >
+                            Adicionar
+                        </Button>
+                    )}
                 </Box>
                 <Divider sx={{ mb: 4 }} />
 

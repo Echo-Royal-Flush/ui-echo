@@ -66,7 +66,6 @@ export const PerfilPage = () => {
                         <button style={{
                             width: '380px',
                             height: '50px',
-                            width: '400px',
                             margin: '10px 0',
                             borderRadius: '13px',
                             borderStyle: 'none',
