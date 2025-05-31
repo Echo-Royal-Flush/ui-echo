@@ -1,4 +1,4 @@
-import { Box, Button, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Box, Button, Select, MenuItem, FormControl, InputLabel, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { useState } from "react";
 import { Header } from "../../components/Header/Header";
 import { PokerCard } from "../../components/PokerCard/PokerCard";
@@ -25,8 +25,30 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
     const [selectedCard, setSelectedCard] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(positiveCategories[0]);
     const [selectedMember, setSelectedMember] = useState(teamMembers[0]?.id || "");
+    const [description, setDescription] = useState("");
+    const [descModalOpen, setDescModalOpen] = useState(false);
 
-    const positiveTopCard = { type: "POSITIVE", categoria: selectedCategory };
+    // Ao clicar para submeter, abre o modal se necessário
+    const handleSubmitCard = () => {
+        if (
+            (selectedCard.type === "CRITICISM" && !description) ||
+            (selectedCard.type === "POSITIVE")
+        ) {
+            setDescModalOpen(true);
+        } else {
+            // lógica de submissão
+            setSelectedCard(null);
+            setDescription("");
+        }
+    };
+
+    // Quando confirmar no modal
+    const handleConfirmDescription = () => {
+        // lógica de submissão
+        setDescModalOpen(false);
+        setSelectedCard(null);
+        setDescription("");
+    };
 
     tableType = "team"; // Forçando o tipo de mesa para "Team" para simplificar o exemplo
 
@@ -249,15 +271,46 @@ export const PokerTable = ({ tableType, teamMembers = mockTeamMembers, serviceIn
                         variant="contained"
                         color="primary"
                         sx={{ mt: 3, backgroundColor: '#7500a8', color: '#fff' }}
-                        onClick={() => {
-                            // lógica de submissão aqui
-                            setSelectedCard(null);
-                        }}
+                        onClick={handleSubmitCard}
                     >
                         Submeter carta
                     </Button>
                 </Box>
             )}
+
+            {/* Modal para descrição */}
+            <Dialog open={descModalOpen} onClose={() => setDescModalOpen(false)}>
+                <DialogTitle>
+                    {selectedCard?.type === "CRITICISM"
+                        ? "Descreva brevemente o motivo da crítica"
+                        : "Descreva brevemente (opcional)"}
+                </DialogTitle>
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Descrição"
+                        type="text"
+                        fullWidth
+                        multiline
+                        minRows={2}
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                        required={selectedCard?.type === "CRITICISM"}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDescModalOpen(false)}>Cancelar</Button>
+                    <Button
+                        onClick={handleConfirmDescription}
+                        disabled={selectedCard?.type === "CRITICISM" && !description}
+                        variant="contained"
+                        sx={{ backgroundColor: '#7500a8', color: '#fff' }}
+                    >
+                        Confirmar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
