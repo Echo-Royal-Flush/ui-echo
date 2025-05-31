@@ -38,7 +38,7 @@ export const PokerTable = () => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await fetch("http://localhost:8080/services");
+                const response = await fetch(import.meta.env.VITE_API_URL + "/services");
 
                 if (!response.ok) throw new Error("Erro ao buscar serviços");
                 const data = await response.json();
@@ -52,7 +52,7 @@ export const PokerTable = () => {
 
         const fetchUsers = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/users-teams/${teamId}/users`);
+                const response = await fetch(import.meta.env.VITE_API_URL + `/users-teams/${teamId}/users`);
 
                 if (!response.ok) throw new Error("Erro ao buscar usuários do time");
                 const data = await response.json();
@@ -96,7 +96,7 @@ export const PokerTable = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8080/feedbacks', {
+            const response = await fetch(import.meta.env.VITE_API_URL + '/feedbacks', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -6,6 +6,9 @@ import { Header } from "../../components/Header/Header";
 import { ServiceCard } from "../../components/ServiceCard/ServiceCard";
 import { RegisterTeam } from "../RegisterTeam/RegisterTeam";
 import { Navigate } from "react-router-dom";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const FeedbackSelection = () => {
     const [services, setServices] = useState([]);
@@ -22,7 +25,7 @@ export const FeedbackSelection = () => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await fetch("http://3.82.229.61:8080/services");
+                const response = await fetch(import.meta.env.VITE_API_URL + "/services");
                 if (!response.ok) throw new Error(`Erro ao buscar serviços: ${response.status}`);
                 const data = await response.json();
                 setServices(data);
@@ -35,7 +38,7 @@ export const FeedbackSelection = () => {
 
         const fetchTeams = async () => {
             try {
-                const response = await fetch("http://3.82.229.61:8080/teams");
+                const response = await fetch(import.meta.env.VITE_API_URL + "/teams");
                 if (!response.ok) throw new Error(`Erro ao buscar equipes: ${response.status}`);
                 const data = await response.json();
                 setTeams(data);

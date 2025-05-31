@@ -19,7 +19,7 @@ export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false }) => 
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await fetch("http://localhost:8080/services");
+                const response = await fetch(import.meta.env.VITE_API_URL + "/services");
                 if (!response.ok) throw new Error("Erro ao buscar serviços");
                 const data = await response.json();
                 setServices(data);
@@ -32,7 +32,7 @@ export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false }) => 
 
         const fetchUsers = async () => {
             try {
-                const response = await fetch("http://localhost:8080/users");
+                const response = await fetch(import.meta.env.VITE_API_URL + "/users");
                 if (!response.ok) throw new Error("Erro ao buscar usuários");
                 const data = await response.json();
                 setUsers(data);
@@ -90,7 +90,7 @@ export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false }) => 
         };
 
         try {
-            const response = await fetch('http://localhost:8080/teams', {
+            const response = await fetch(import.meta.env.VITE_API_URL + '/teams', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
