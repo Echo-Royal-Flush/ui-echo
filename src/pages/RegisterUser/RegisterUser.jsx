@@ -1,9 +1,11 @@
-import { Box } from "@mui/material"
+import { Box } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const LoginPage = () => {
+export const RegisterUser = () => {
     const navigate = useNavigate();
+    const [name, setName] = useState('');
+    const [jobTitle, setJobTitle] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -11,18 +13,19 @@ export const LoginPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!email || !password) {
+        if (!name || !jobTitle || !email || !password) {
             setError('Preencha todos os campos.');
             return;
         }
 
-        console.log('Email:', email);
-        console.log('Senha:', password);
         setError('');
 
-        // Chamar  API
-        alert('Login enviado!');
+        // Chamar API de cadastro aqui
+        alert('Cadastro enviado!');
+
+        navigate('/');
     };
+
     return (
         <Box sx={{
             background: 'linear-gradient(135deg, #540089 0%, #8e1dc1 40%, #ca78c8 100%)',
@@ -50,18 +53,27 @@ export const LoginPage = () => {
                     />
 
                     <input
+                        type="text"
+                        placeholder="Nome"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        style={inputStyle}
+                    />
+
+                    <input
+                        type="text"
+                        placeholder="Cargo"
+                        value={jobTitle}
+                        onChange={(e) => setJobTitle(e.target.value)}
+                        style={inputStyle}
+                    />
+
+                    <input
                         type="email"
                         placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        style={{
-                            width: '350px',
-                            height: '40px',
-                            margin: '10px 0',
-                            borderRadius: '13px',
-                            borderStyle: 'none',
-                            padding: '1px 15px'
-                        }}
+                        style={inputStyle}
                     />
 
                     <input
@@ -69,14 +81,7 @@ export const LoginPage = () => {
                         placeholder="Senha"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        style={{
-                            width: '350px',
-                            height: '40px',
-                            margin: '10px 0',
-                            borderRadius: '13px',
-                            borderStyle: 'none',
-                            padding: '1px 15px'
-                        }}
+                        style={inputStyle}
                     />
 
                     {error && <p style={{ color: '#c28d19', margin: '8px 0' }}>{error}</p>}
@@ -93,17 +98,27 @@ export const LoginPage = () => {
                             fontWeight: 'bold',
                             backgroundColor: '#c28d19',
                             boxShadow: '0 6px 6px rgba(0, 0, 0, 0.5)'
-                        }}>Entrar</button>
+                        }}>Cadastrar</button>
+
                     <p style={{ color: '#fff' }}>
-                        Não possui conta? <a
+                        Já possui conta? <a
                             style={{ textDecoration: 'underline', color: '#fff', cursor: 'pointer' }}
-                            onClick={() => navigate('/register')}
+                            onClick={() => navigate('/')}
                         >
-                            Cadastre-se!
+                            Entrar
                         </a>
                     </p>
                 </form>
             </Box>
         </Box>
-    )
-}
+    );
+};
+
+const inputStyle = {
+    width: '350px',
+    height: '40px',
+    margin: '10px 0',
+    borderRadius: '13px',
+    borderStyle: 'none',
+    padding: '1px 15px'
+};
