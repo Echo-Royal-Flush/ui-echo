@@ -12,7 +12,7 @@ const teams = [
     { name: "Equipe Zeta", size: 4 },
 ];
 
-export const AdminTeams = () => {
+export const TeamSelection = () => {
     return (
         <Box sx={{
             backgroundColor: '#ffffff',
