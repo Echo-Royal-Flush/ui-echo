@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const ViewCard = () => {
   const [hovered, setHovered] = useState(false);
+
+  const navigate = useNavigate();
 
   const cardStyle = {
     width: '300px',
@@ -51,7 +54,7 @@ export const ViewCard = () => {
       </p>
       <button
         style={hovered ? buttonHoverStyle : buttonStyle}
-        onClick={() => alert('Começando agora!')}
+        onClick={() => navigate('/perfil')}
       >
         Veja agora!
       </button>
