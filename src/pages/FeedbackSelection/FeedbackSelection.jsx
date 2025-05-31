@@ -7,38 +7,41 @@ import { ServiceCard } from "../../components/ServiceCard/ServiceCard";
 
 export const FeedbackSelection = () => {
     const [services, setServices] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    // Dados mockados de equipes
-    const teams = [
-        { name: "Equipe Alpha", size: 8 },
-        { name: "Equipe Beta", size: 5 },
-        { name: "Equipe Gama", size: 12 },
-        { name: "Equipe Delta", size: 7 },
-        { name: "Equipe Epsilon", size: 10 },
-        { name: "Equipe Zeta", size: 4 },
-    ];
+    const [teams, setTeams] = useState([]);
+    const [loadingServices, setLoadingServices] = useState(true);
+    const [loadingTeams, setLoadingTeams] = useState(true);
+    const [errorServices, setErrorServices] = useState(null);
+    const [errorTeams, setErrorTeams] = useState(null);
 
     useEffect(() => {
         const fetchServices = async () => {
             try {
                 const response = await fetch("http://localhost:8080/services");
-
-                if (!response.ok) {
-                    throw new Error(`Erro ao buscar serviços: ${response.status}`);
-                }
-
+                if (!response.ok) throw new Error(`Erro ao buscar serviços: ${response.status}`);
                 const data = await response.json();
                 setServices(data);
             } catch (err) {
-                setError(err.message);
+                setErrorServices(err.message);
             } finally {
-                setLoading(false);
+                setLoadingServices(false);
+            }
+        };
+
+        const fetchTeams = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/teams");
+                if (!response.ok) throw new Error(`Erro ao buscar equipes: ${response.status}`);
+                const data = await response.json();
+                setTeams(data);
+            } catch (err) {
+                setErrorTeams(err.message);
+            } finally {
+                setLoadingTeams(false);
             }
         };
 
         fetchServices();
+        fetchTeams();
     }, []);
 
     return (
@@ -64,17 +67,23 @@ export const FeedbackSelection = () => {
                     </Button>
                 </Box>
                 <Divider sx={{ mb: 4 }} />
-                <Grid container spacing={3} sx={{ mb: 8 }}>
-                    {teams.map((team, idx) => (
-                        <Grid item xs={12} sm={6} md={4} key={idx}>
-                            <TeamCard
-                                name={team.name}
-                                size={team.size}
-                                onClick={() => alert(`Equipe: ${team.name}`)}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
+                {loadingTeams ? (
+                    <CircularProgress />
+                ) : errorTeams ? (
+                    <Alert severity="error">{errorTeams}</Alert>
+                ) : (
+                    <Grid container spacing={3} sx={{ mb: 8 }}>
+                        {teams.map((team, idx) => (
+                            <Grid item xs={12} sm={6} md={4} key={idx}>
+                                <TeamCard
+                                    name={team.name}
+                                    size={team.length} // ou team.size, depende da API
+                                    onClick={() => alert(`Equipe: ${team.name}`)}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                )}
 
                 {/* Serviços */}
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
@@ -87,11 +96,10 @@ export const FeedbackSelection = () => {
                     </Typography>
                 </Box>
                 <Divider sx={{ mb: 4 }} />
-
-                {loading ? (
+                {loadingServices ? (
                     <CircularProgress />
-                ) : error ? (
-                    <Alert severity="error">{error}</Alert>
+                ) : errorServices ? (
+                    <Alert severity="error">{errorServices}</Alert>
                 ) : (
                     <Grid container spacing={3}>
                         {services.map((service, idx) => (
