@@ -83,8 +83,9 @@ export const RegisterTeam = ({ open, onClose, onSubmit, isEditing = false }) => 
 
         const payload = {
             name: teamName,
+            length: members.length,
             service: services.find(s => s.id === service), // precisa enviar o objeto completo
-            members: members, // objetos completos dos membros
+            members: members.map(m => m.id), // objetos completos dos membros
             companyId: JSON.parse(localStorage.getItem('companyId'))
         };
 
